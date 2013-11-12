@@ -1,3 +1,5 @@
+/*============原生封装============*/
+
 function addLoadEvent(func){
 	var oldonload = window.onload;
 	if(typeof window.onload != "function"){
@@ -27,6 +29,9 @@ function addClass(element,value){
 		element.className = newClassName;
 	}
 }
+
+/*============主导航条效果============*/
+
 //与当前url和导航链接一致的导航添加类
 function highlightPage(){
 	if(!document.getElementsByTagName) return false;
@@ -51,6 +56,8 @@ function highlightPage(){
 }
 //调用函数highlightPage
 addLoadEvent(highlightPage);
+
+/*============小幻灯片============*/
 
 //获取参数实现图片移动效果
 function moveElement(elementID,final_x,final_y,interval){
@@ -133,6 +140,8 @@ function prepareSlideshow(){
 
 addLoadEvent(prepareSlideshow);
 
+/*============文字切换效果============*/
+
 //控制section显示隐藏
 function showSection(id){
 	var sections=document.getElementsByTagName('section');
@@ -167,4 +176,54 @@ function prepareInternalnav(){
 };
 addLoadEvent(prepareInternalnav);
 
-//
+/*============图片库============*/
+
+//pic
+function showPic(whichpic){
+	if (!document.getElementById('placeholder')) return true;
+	var source = whichpic.getAttribute('href');
+	var placeholder = document.getElementById('placeholder');
+	placeholder.setAttribute('src',source);
+	if (!document.getElementById('description')) return false;
+	if (whichpic.getAttribute('title')) {
+		var text = whichpic.getAttribute('title');
+	}else{
+		var text ="";
+	}
+	var description=document.getElementById('description');
+	if (description.firstChild.nodeType == 3) {
+		description.firstChild.nodeValue = text;
+	};
+	return false;
+}
+function preparePlaceholder(){
+	if (!document.createElement) return false;
+	if (!document.createTextNode) return false;
+	if (!document.getElementById) return false;
+	if (!document.getElementById('imagega11ery')) return false;
+	var placeholder=document.createElement('img');
+	placeholder.setAttribute('id','placeholder');
+	placeholder.setAttribute('src','images/placeholder.gif');
+	placeholder.setAttribute('alt','my image gallery');
+	var description=document.createElement('p');
+	description.setAttribute('id','description');
+	var desctext = document.createTextNode('Choose an image');
+	description.appendChild(desctext);
+	var gallery = document.getElementById('imagegallery');
+	insertAfter(description,gallery);
+	insertAfter(placeholder,description);
+}
+function prepareGallery(){
+	if (!document.getElementsByTagName) return false;
+	if (!document.getElementById) return false;
+	if (!document.getElementById('imagega11ery')) return false;
+	var gallery=document.getElementById('imagegallery');
+	var links=gallery.getElementsByTagName('a');
+	for (var i = 0; i < links.length; i++) {
+		links[i].onclick=function(){
+			return showPic(this);
+		}
+	};
+}
+addLoadEvent(preparePlaceholder);
+addLoadEvent(prepareGallery);
