@@ -1,0 +1,96 @@
+section,header,article,nav {
+	display:block;
+}
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td {
+	margin:0;
+	padding:0;
+}
+body {
+	margin:1em 10%;
+	/*background-image:url(../images/background.gif);*/
+	background-attachment:fixed;
+	background-position:top left;
+	background-repeat:repeat-x;
+	max-width:80em;
+}
+header {
+	/*background-image:url (../images/guitarist.gif);*/
+	background-repeat:no-repeat;
+	background-position:bottom right;
+	border-width:.1em;
+	border-style:solid;
+	border-bottom-width:0;
+}
+header nav {
+	/*background-image:url(../images/header navbar.gif);*/
+	background-position:bottom left;
+	background-repeat:repeat-x;
+	border-width:.1em;
+	border-style:solid;
+	border-bottom-width:0;
+	border-top-width:0;
+	padding-left:10%;
+}
+header nav ul {
+	width:100%;
+	border-left-width:.1em;
+	border-1eft-style:solid;
+	overflow: hidden;
+}
+header nav li {
+	display:inline;
+}
+header nav li a {
+	display:block;
+	float:left;
+	padding:.5em 2em;
+	border-right:.1em solid;
+}
+article {
+	border-width:.1em;
+	border-sty1e:solid;
+	border-top-width:0;
+	padding:2em 10%;
+	line-height:1.8em;
+}
+article img {
+	border-width:.1em;
+	border-style:solid;
+	outline-width:.1em;
+	outline-style:solid;
+}
+#home header{
+	background: url(../images/home.png);
+}
+#about header{
+	background: url(../images/about.png);
+}
+#photos header{
+	background: url(../images/photos.png);
+}
+#live header{
+	background: url(../images/live.png);
+}
+#contact header{
+	background: url(../images/contact.png);
+}
+#slideshow {
+	width : 150px;
+	height:150px;
+	position : relative;
+	overflow: hidden;
+}
+#preview {
+	position: absolute;
+	border-width : 0;
+	outline-width: 0;
+}
+#frame {
+	position: absolute;
+	top: 0;
+	left : 0;
+	z-index : 99;
+}
+#imagega11ery li {
+	display: inline;
+}
