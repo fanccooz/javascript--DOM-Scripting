@@ -20,10 +20,10 @@ article {
 	line-height: 1.8em;
 }
 article p {
-	margin: lem 0;
+	margin: 1em 0;
 }
 h1 {
-	font-family : IGeorgia , "Tim New Roman" , sans-serif;
+	font-family : "Georgia", "Tim New Roman" , sans-serif;
 	font: 2.4em normal;
 }
 h2 {
@@ -32,7 +32,7 @@ h2 {
 	margin-top:1em;
 }
 h3 {
-	font-family : "Georgia" ,"Times New Roman" , sans -serif;
+	font-family : "Georgia" ,"Times New Roman" , sans-serif;
 	font:1.4em normal;
 	margin-top: 1em;
 }
@@ -40,5 +40,12 @@ h3 {
 	list-style-type: none;
 }
 textarea {
-	font-family : "Helvetica 气 "Arial" , sans-serif ;
+	font-family : "Helvetica","Arial" , sans-serif ;
 }
+dt {
+	margin-right: 1em;
+}
+dd {
+	margin-right : 3em;
+}
+

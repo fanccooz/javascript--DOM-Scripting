@@ -34,7 +34,7 @@ header nav {
 header nav ul {
 	width:100%;
 	border-left-width:.1em;
-	border-1eft-style:solid;
+	border-left-style:solid;
 	overflow: hidden;
 }
 header nav li {
@@ -48,7 +48,7 @@ header nav li a {
 }
 article {
 	border-width:.1em;
-	border-sty1e:solid;
+	border-style:solid;
 	border-top-width:0;
 	padding:2em 10%;
 	line-height:1.8em;
@@ -96,4 +96,19 @@ article img {
 }
 td{
 	padding: .5em 3em;
+}
+dl{
+	overflow: hidden:
+}
+dt {
+	float: left;
+}
+dd {
+	float: left;
+}
+label {
+	display: block;
+}
+fieldset {
+	border: 0;
 }

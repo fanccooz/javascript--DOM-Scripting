@@ -159,7 +159,7 @@ function prepareInternalnav(){
 	if(!document.getElementsByTagName) return false;
 	if(!document.getElementById) return false;
 	var articles=document.getElementsByTagName('article');
-	if (articles.length ==0 ) return false;
+	if (articles.length == 0) return false;
 	var navs=articles[0].getElementsByTagName('nav');
 	if (navs.length == 0) return false;
 	var links=navs[0].getElementsByTagName('a');
@@ -229,3 +229,92 @@ function prepareGallery(){
 //调用函数
 addLoadEvent(preparePlaceholder);
 addLoadEvent(prepareGallery);
+
+/*============表格高亮============*/
+
+//隔行换色
+function striptTables(){
+	if (!document.getElementsByTagName) return false;
+	var tables=document.getElementsByTagName('table');
+	for (var i = 0; i < tables.length; i++) {
+		var trTag=document.getElementsByTagName('tr');
+		var odd=false;
+		for (var l = 0; l < trTag.length; l++) {
+			if (odd == true) {
+				addClass(trTag[l],'odd');
+				odd=false;
+			} else{
+				odd=true;
+			};
+		};
+	};
+};
+/*我的写法
+function striptTables(){
+	if (!document.getElementsByTagName) return false;
+	var trTag=document.getElementsByTagName('tr');
+	var odd=false;
+	for (var l = 0; l < trTag.length; l++) {
+		if (odd == true) {
+			addClass(trTag[l],'odd');
+			odd=false;
+		} else{
+			odd=true;
+		};
+	};
+};
+*/
+
+//鼠标经过背景色变化
+function highlightRows(){
+	if (!document.getElementsByTagName) return false;
+	var trTag=document.getElementsByTagName('tr');
+	for (var i = 0; i < trTag.length; i++) {
+		trTag[i].oldClassName=trTag[i].className;
+		trTag[i].onmouseover=function(){
+			addClass(this,'highlight');
+		};
+		trTag[i].onmouseout=function(){
+			this.className=this.oldClassName;
+		}
+	};
+};
+
+//获取关联数组，添加元素节点和文本节点
+function displayAbbreviations(){
+	if (!document.getElementsByTagName || !document.createTextNode || !document.createElement) return false;
+	var abbreviations=document.getElementsByTagName('abbr');
+	if (abbreviations.length <1) return false;
+	var defs=new Array();
+	for (var i = 0; i < abbreviations.length; i++) {
+		var destination=abbreviations[i].getAttribute('title');
+		if (destination.length <1) return false;
+		var key=abbreviations[i].firstChild.nodeValue;
+		defs[key]=destination;
+	};
+	var dllist=document.createElement('dl');
+	for (key in defs) {
+		destination=defs[key];
+		var dttitle=document.createElement('dt');
+		var dttitle_text=document.createTextNode(key);
+		var ddtitle=document.createElement('dd');
+		var ddtitle_text=document.createTextNode(destination);
+		dttitle.appendChild(dttitle_text);
+		ddtitle.appendChild(ddtitle_text);
+		dllist.appendChild(dttitle);
+		dllist.appendChild(ddtitle);
+	};
+	var articles=document.getElementsByTagName('article')[0];
+	if (articles.length < 0) return false;
+	var headers=document.createElement('h3');
+	var headers_text=document.createTextNode('aaaaa');
+	headers.appendChild(headers_text);
+	articles.appendChild(headers);
+	articles.appendChild(dllist);
+};
+addLoadEvent(striptTables);
+addLoadEvent(highlightRows);
+addLoadEvent(displayAbbreviations);
+
+/*============表格高亮============*/
+
