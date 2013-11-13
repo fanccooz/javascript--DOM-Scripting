@@ -154,7 +154,7 @@ function showSection(id){
 		};
 	};
 };
-//导航获取,点击并且传送id
+//导航获取,绑定鼠标划过并且调用函数showSection
 function prepareInternalnav(){
 	if(!document.getElementsByTagName) return false;
 	if(!document.getElementById) return false;
@@ -168,7 +168,7 @@ function prepareInternalnav(){
 		if (!document.getElementById(slideId)) continue;
 		document.getElementById(slideId).style.display='none';
 		links[i].destination=slideId;
-		links[i].onclick=function(){
+		links[i].onmouseover=function(){
 			showSection(this.destination);
 			return false;
 		};
@@ -316,5 +316,5 @@ addLoadEvent(striptTables);
 addLoadEvent(highlightRows);
 addLoadEvent(displayAbbreviations);
 
-/*============表格高亮============*/
+/*============表单提交============*/
 
