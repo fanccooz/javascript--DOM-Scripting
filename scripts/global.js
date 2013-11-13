@@ -10,7 +10,7 @@ function addLoadEvent(func){
 			func();
 		}
 	}
-}
+};
 function insertAfter(newElement,targetElement){
 	var parent = targetElement.parentNode;
 	if(parent.lastChild == targetElement){
@@ -18,7 +18,7 @@ function insertAfter(newElement,targetElement){
 	}else{
 		parent.insertBefore(newElement,targetElement.nextSibling);
 	}
-}
+};
 function addClass(element,value){
 	if(!element.className){
 		element.className = value;
@@ -28,7 +28,7 @@ function addClass(element,value){
 		newClassName+=value;
 		element.className = newClassName;
 	}
-}
+};
 
 /*============主导航条效果============*/
 
@@ -53,7 +53,7 @@ function highlightPage(){
 			// console.log(linkurl);
 		};
 	};
-}
+};
 //调用函数highlightPage
 addLoadEvent(highlightPage);
 
@@ -98,7 +98,7 @@ function moveElement(elementID,final_x,final_y,interval){
 	elem.style.top =ypos + 'px';
 	var repeat = "moveElement("+elementID+","+final_x+","+final_y+","+interval+")";
 	elem.movement = setTimeout(repeat,setInterval);
-}
+};
 //添加img,鼠标移上去发送参数数值
 function prepareSlideshow(){
 	if (!document.getElementsByTagName) return false;
@@ -136,13 +136,13 @@ function prepareSlideshow(){
 			};
 		};
 	};
-}
+};
 
 addLoadEvent(prepareSlideshow);
 
 /*============文字切换效果============*/
 
-//控制section显示隐藏
+//获取id,控制section显示隐藏
 function showSection(id){
 	var sections=document.getElementsByTagName('section');
 	for (var i = 0; i < sections.length; i++) {
@@ -151,9 +151,9 @@ function showSection(id){
 		}else{
 			// document.getElementById(id).style.display='block';
 			sections[i].style.display='block';
-		}
+		};
 	};
-}
+};
 //导航获取,点击并且传送id
 function prepareInternalnav(){
 	if(!document.getElementsByTagName) return false;
@@ -171,59 +171,61 @@ function prepareInternalnav(){
 		links[i].onclick=function(){
 			showSection(this.destination);
 			return false;
-		}
+		};
 	};
 };
 addLoadEvent(prepareInternalnav);
 
 /*============图片库============*/
 
-//pic
+//获取信息添加到相应的标签上
 function showPic(whichpic){
-	if (!document.getElementById('placeholder')) return true;
-	var source = whichpic.getAttribute('href');
-	var placeholder = document.getElementById('placeholder');
-	placeholder.setAttribute('src',source);
-	if (!document.getElementById('description')) return false;
+	if (!document.getElementById('placeholder')) return false;
+	var imagesR=whichpic.getAttribute('href');
+	var placeholder=document.getElementById('placeholder');
+	placeholder.setAttribute('src',imagesR);
 	if (whichpic.getAttribute('title')) {
-		var text = whichpic.getAttribute('title');
-	}else{
-		var text ="";
-	}
-	var description=document.getElementById('description');
+		var text=whichpic.getAttribute('title');
+	} else{
+		var text='';
+	};
+	description=document.getElementById('description');
 	if (description.firstChild.nodeType == 3) {
-		description.firstChild.nodeValue = text;
+		description.firstChild.nodeValue=text;
 	};
 	return false;
-}
+};
+//在ul标签后来添加p标签和img标签
 function preparePlaceholder(){
-	if (!document.createElement) return false;
-	if (!document.createTextNode) return false;
+	if (!document.getElementsByTagName) return false;
 	if (!document.getElementById) return false;
-	if (!document.getElementById('imagega11ery')) return false;
+	if (!document.createTextNode) return false;
+	if (!document.getElementById('imagegallery')) return false;
+	var gallery=document.getElementById('imagegallery');
 	var placeholder=document.createElement('img');
 	placeholder.setAttribute('id','placeholder');
-	placeholder.setAttribute('src','images/placeholder.gif');
-	placeholder.setAttribute('alt','my image gallery');
+	placeholder.setAttribute('src','images/photos.png');
+	placeholder.setAttribute('alt','images');
 	var description=document.createElement('p');
 	description.setAttribute('id','description');
-	var desctext = document.createTextNode('Choose an image');
-	description.appendChild(desctext);
-	var gallery = document.getElementById('imagegallery');
-	insertAfter(description,gallery);
+	var descriptionText=document.createTextNode('choose an images');
+	description.appendChild(descriptionText);
+	insertAfter(description,gallery);	
 	insertAfter(placeholder,description);
-}
+};
+//获取a标签并且绑定点击事件
 function prepareGallery(){
 	if (!document.getElementsByTagName) return false;
 	if (!document.getElementById) return false;
-	if (!document.getElementById('imagega11ery')) return false;
+	if (!document.getElementById('imagegallery')) return false;
 	var gallery=document.getElementById('imagegallery');
 	var links=gallery.getElementsByTagName('a');
 	for (var i = 0; i < links.length; i++) {
-		links[i].onclick=function(){
+		links[i].onmouseover=function(){
 			return showPic(this);
-		}
+		};
 	};
-}
+};
+//调用函数
 addLoadEvent(preparePlaceholder);
 addLoadEvent(prepareGallery);

@@ -91,6 +91,9 @@ article img {
 	left : 0;
 	z-index : 99;
 }
-#imagega11ery li {
+#imagegallery li {
 	display: inline;
+}
+td{
+	padding: .5em 3em;
 }
