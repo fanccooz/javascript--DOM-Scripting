@@ -272,6 +272,7 @@ function highlightRows(){
 	for (var i = 0; i < trTag.length; i++) {
 		trTag[i].oldClassName=trTag[i].className;
 		trTag[i].onmouseover=function(){
+			this.className='';
 			addClass(this,'highlight');
 		};
 		trTag[i].onmouseout=function(){
@@ -316,5 +317,155 @@ addLoadEvent(striptTables);
 addLoadEvent(highlightRows);
 addLoadEvent(displayAbbreviations);
 
-/*============表单提交============*/
+/*============表单============*/
 
+//点击label标签聚焦到相应的input标签
+function focuslabels(){
+	if (!document.getElementsByTagName) return false;
+	var labels=document.getElementsByTagName('label');
+	for(var i=0; i< labels.length;i++){
+		if (!labels[i].getAttribute('for')) continue;
+		labels[i].onclick=function(){
+			var id=this.getAttribute('for');
+			if(!document.getElementById(id)) return false;
+			var element =document.getElementById(id);
+			element.focus();
+			element.style.border='1px solid #444';
+		};
+	};
+};
+addLoadEvent(focuslabels);
+
+//input执行鼠标获取焦点失去焦点
+function reseFields(whichform){
+	if(!Modernizr.input.placeholder) return;
+	for (var i = 0; i < whichform.elements.length; i++) {
+		var element=whichform.elements[i];
+		if (element.type == 'submit') continue;
+		var check = element.placeholder || element.getAttribute('placeholder');
+		if (!check) continue;
+		element.onfocus = function(){
+			var text = this.placeholder || this.getAttribute('placeholder');
+			if (this.value == text) {
+				this.className ='';
+				this.value ='';
+			}
+		}
+		element.onblur = function(){
+			if (this.value == '') {
+				this.className = 'placeholder';
+				this.value =this.placeholder || this.getAttribute('placeholder');
+			}
+		}
+		element.onblur();
+	};
+};
+//检测用户名
+function isFilled(field){
+	if (field.value.indexOf(' ') > -1) return false;
+	var placeholder = field.placeholder || field.getAttribute('placeholder');
+	return (field.value !=placeholder);
+}
+//检测email的格式是否正确
+function isEmail(field){
+	return (field.value.indexOf('@')!= -1 && field.value.indexOf('.')!= -1);
+}
+//检测用户名和邮箱是否符合格式
+function validateForm(whichpic){
+	for (var i = 0; i < whichpic.elements.length; i++) {
+		var element=whichpic.elements[i];
+		if (element.type == 'text') {
+			if (!isFilled(element)) {
+				alert('Please fill in the '+element.name+' field'+' user_name have blank');
+				return false;
+			}
+		};
+		if (element.type == 'email') {
+			if (!isEmail(element)) {
+				alert('the '+element.name+' field must be a valid email address.');
+				return false;
+			}
+		};
+	};
+	return true; 
+};
+//获取forms绑定提交按钮
+// function prepareForms(){
+// 	for (var i = 0; i < document.forms.length; i++) {
+// 		var thisform=document.forms[i];
+// 		reseFields(thisform);
+// 		thisform.onsubmit= function(){
+// 			return validateForm(this);
+// 		}
+// 	};
+// };
+// addLoadEvent(prepareForms);
+
+function getHTTPObject(){
+	if ( typeof XMLHttpRequest == 'undefined') {
+		var XMLHttpRequest = function(){
+			try{ return new ActiveXObject('Msxml2.XMLHTTP.6.0');
+			}catch (e){}
+			try{ return new ActiveXObject('Msxml2.XMLHTTP.3.0');
+			}catch (e){}
+			try{ return new ActiveXObject('Msxml2.XMLHTTP');
+			}catch (e){}
+			return false;
+		}
+		return new XMLHttpRequest();
+	};
+};
+function displayAjaxLoading(element){
+	while (element.hasChildNodes()) {
+		element.removeChild(element.lastChild);
+	};
+	var content = document.createElement('img');
+	content.setAttribute('src','images/loading.gif');
+	content.setAttribute('alt','loading...');
+	element.appendChild(content);
+};
+function submitFormWithAjax(whichform,thetarget){
+	var request= getHTTPObject();
+	if (!request) return false;
+	displayAjaxLoading(thetarget);
+	var dataParts=[];
+	var element;
+	for (var i = 0; i < whichform.elements.length; i++) {
+		element = whichform.elements[i];
+		dataParts[i] =element.name + '='+encodeURIComponent(element.value);
+	};
+	var data = dataParts.join('&');
+	console.log(request);
+	request.open('POST',whichform.getAttribute('action'),true);
+	request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	request.onreadystatechange=function(){
+		if (request.readyState == 4) {
+			if (request.status == 200 || request.status ==0) {
+				var matches =request.responseText.match(/<article>([\s\S]+)<\/article/);
+				if (matches.length>0) {
+					thetarget.innerHTML=matches[1];
+				}else if(matches.length<0){
+					thetarget.innerHTML ='<p>Oops , there was an error. Sorry.</p>'
+				}else{
+					thetarget.innerHTML='<p>'+request.statusText +'</p>';
+				}
+			};
+		};
+		request.send(data);
+		return true;
+	};
+};
+function prepareForms(){
+	for (var i = 0; i < document.forms.length; i++) {
+		var thisform=document.forms[i];
+		// resetFields(thisform);
+		thisform.onsubmit=function(){
+			if (!validateForm(this)) return false;
+			var article= document.getElementsByTagName('article')[0];
+			if (submitFormWithAjax(this,article)) return false;
+			return true;
+		};
+	};
+};
+
+addLoadEvent(prepareForms);
