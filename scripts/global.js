@@ -403,7 +403,7 @@ function validateForm(whichpic){
 
 /*============ajax提交表单============*/
 
-//XMLHttpRequest兼容所有浏览器
+// //XMLHttpRequest兼容所有浏览器
 function getHTTPObject(){
 	if ( typeof XMLHttpRequest == 'undefined')
 	XMLHttpRequest = function(){
@@ -414,7 +414,7 @@ function getHTTPObject(){
 	}
 	return new XMLHttpRequest();
 };
-//移除节点，添加加载图片
+//移除节点，添加加载图片,加载gif
 function displayAjaxLoading(element){
 	while (element.hasChildNodes()) {
 		element.removeChild(element.lastChild);
@@ -428,7 +428,7 @@ function displayAjaxLoading(element){
 function submitFormWithAjax(whichform,thetarget){
 	var request = getHTTPObject();
 	if (!request) return false;
-	displayAjaxLoading(thetarget);
+	// displayAjaxLoading(thetarget);
 	var dataParts = [];
 	var element;
 	for (var i = 0; i < whichform.elements.length; i++) {
@@ -436,31 +436,32 @@ function submitFormWithAjax(whichform,thetarget){
 		dataParts[i] = element.name + '='+encodeURIComponent(element.value);
 	};
 	var data = dataParts.join('&');
-	request.open('POST',whichform.getAttribute('action'),true);
-	request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	request.send(data);
 	request.onreadystatechange = function () {
 		if (request.readyState == 4) {
 			if (request.status == 200 || request.status == 0) {
-				var matches =request.responseText.match(/<article>([\s\S]+)<\/article>/);
-				if (matches.length > 0) {
-					thetarget.innerHTML = matches[1];
-				}else{
-					thetarget.innerHTML = '<p>Oops , there was an error. Sorry.</p>'
-				}
+				return true;
+				// if (matches.length > 0) {
+				//     thetarget.innerHTML = matches[1];
+			 //    }else{
+				//     thetarget.innerHTML = '<p>Oops , there was an error. Sorry.</p>'
+			 //    }
 			}else{
 				thetarget.innerHTML = '<p>'+request.statusText +'</p>';
 			};
 		};
 		return true;
 	};
+	request.open('POST','show.html',true);
+	request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	request.send(data);
 };
 //获取forms绑定提交按钮
 function prepareForms(){
 	for (var i = 0; i < document.forms.length; i++) {
 		var thisform = document.forms[i];
 		// resetFields(thisform);
-		thisform.onsubmit = function(){
+		thisform.onsubmit = function(event){
+			event.preventDefault();
 			if (!validateForm(this)) return false;
 			var article = document.getElementsByTagName('article')[0];
 			if (submitFormWithAjax(this,article)) return false;
