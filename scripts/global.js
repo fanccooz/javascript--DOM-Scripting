@@ -440,6 +440,7 @@ function submitFormWithAjax(whichform,thetarget){
 		if (request.readyState == 4) {
 			if (request.status == 200 || request.status == 0) {
 				return true;
+				// var matches =request.responseText.match(/<article>([\s\S]+)<\/article>/);
 				// if (matches.length > 0) {
 				//     thetarget.innerHTML = matches[1];
 			 //    }else{
